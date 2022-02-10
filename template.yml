@@ -5,11 +5,13 @@ Description: Codebuild AWS Lambda deployment
 Parameters:
   ApiGWId:
     Type: String
-
   AppPath:
     Type: String
     Description: "Specifies the path where the app is called (ex: https://apigw_addess/path/)"
-
+  AppVersion:
+    Type: String
+    Description: "Specifies the version of the app (is displayed in the response)"
+    Default: "v1.0"
 Resources:
   LambdaFunction:
     Type: "AWS::Serverless::Function"
@@ -23,6 +25,7 @@ Resources:
       Environment:
         Variables:
           DEBUG: "beameio:*"
+          APP_VERSION: !Ref AppVersion
       Events:
         ProxyAny:
           Type: Api
