@@ -1,0 +1,11 @@
+{
+  "name": "codebuild-aws-lambda",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "author": "Beame.io",
+  "license": "MIT",
+  "dependencies": {
+    "debug": "^4.3.3"
+  }
+}

@@ -1,0 +1,32 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+Description: Codebuild AWS Lambda deployment
+
+Parameters:
+  ApiGWId:
+    Type: String
+
+  AppPath:
+    Type: String
+    Description: "Specifies the path where the app is called (ex: https://apigw_addess/path/)"
+
+Resources:
+  LambdaFunction:
+    Type: "AWS::Serverless::Function"
+    Properties:
+      Handler: index.handler
+      Runtime: nodejs14.x
+      CodeUri: src/
+      Description: Codebuild aws lambda example
+      MemorySize: 123
+      Timeout: 30
+      Environment:
+        Variables:
+          DEBUG: "beameio:*"
+      Events:
+        ProxyAny:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGWId
+            Path: !Sub '/${AppPath}/{proxy+}'
+            Method: any
