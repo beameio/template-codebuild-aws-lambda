@@ -56,5 +56,5 @@ Resources:
           Type: Api
           Properties:
             RestApiId: !Ref ApiGW
-            Path: !Sub '/{proxy+}'
+            Path: '/{proxy+}'
             Method: any
