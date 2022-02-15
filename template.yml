@@ -3,18 +3,43 @@ Transform: "AWS::Serverless-2016-10-31"
 Description: Codebuild AWS Lambda deployment
 
 Parameters:
-  ApiGWId:
+  AppName:
     Type: String
-  AppPath:
-    Type: String
-    Description: "Specifies the path where the app is called (ex: https://apigw_addess/path/)"
+    Description: "Specifies the name of the app and the stage where its called on apigw (ex: https://apigw_addess/appname/)"
   AppVersion:
     Type: String
     Description: "Specifies the version of the app (is displayed in the response)"
-    Default: "v1.0"
+  DNSZoneId:
+    Type: String
+    Description: "DNS Zone Id"
+  DNSZoneName:
+    Type: String
+    Description: "DNS Zone HostName"
+
 Resources:
+  DNSZoneCertificate:
+    Type: AWS::CertificateManager::Certificate
+    Properties:
+      DomainName: !Sub '${AppName}.${DNSZoneName}'
+      DomainValidationOptions:
+        - DomainName: !Sub '${AppName}.${DNSZoneName}'
+          HostedZoneId: !Ref DNSZoneId
+      ValidationMethod: DNS
+
+  APIGW:
+    Type: AWS::Serverless::Api
+    Properties:
+      OpenApiVersion: 3.0.1
+      StageName: !Ref AppVersion
+      Domain:
+        CertificateArn: !Ref DNSZoneCertificate
+        DomainName: !Sub '${AppName}.${DNSZoneName}'
+        Route53:
+          HostedZoneId: !Ref DNSZoneId
+        SecurityPolicy: TLS_1_2
+
   LambdaFunction:
-    Type: "AWS::Serverless::Function"
+    Type: AWS::Serverless::Function
     Properties:
       Handler: index.handler
       Runtime: nodejs14.x
@@ -30,6 +55,6 @@ Resources:
         ProxyAny:
           Type: Api
           Properties:
-            RestApiId: !Ref ApiGWId
-            Path: !Sub '/${AppPath}/{proxy+}'
+            RestApiId: !Ref APIGW
+            Path: !Sub '/{proxy+}'
             Method: any
