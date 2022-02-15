@@ -26,7 +26,7 @@ Resources:
           HostedZoneId: !Ref DNSZoneId
       ValidationMethod: DNS
 
-  APIGW:
+  ApiGW:
     Type: AWS::Serverless::Api
     Properties:
       OpenApiVersion: 3.0.1
@@ -55,6 +55,6 @@ Resources:
         ProxyAny:
           Type: Api
           Properties:
-            RestApiId: !Ref APIGW
+            RestApiId: !Ref ApiGW
             Path: !Sub '/{proxy+}'
             Method: any
