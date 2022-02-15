@@ -52,9 +52,24 @@ Resources:
           DEBUG: "beameio:*"
           APP_VERSION: !Ref AppVersion
       Events:
+        ProxyApiRoot:
+          Type: Api
+          Properties:
+            RestApiId: !Ref ApiGW
+            Path: /
+            Method: ANY
         ProxyAny:
           Type: Api
           Properties:
             RestApiId: !Ref ApiGW
-            Path: '/{proxy+}'
-            Method: any
+            Path: /{proxy+}
+            Method: ANY
+
+Outputs:
+  ApiUrl:
+    Description: URL of your API endpoint
+    Value: !Join
+      - ''
+      - - !Sub https://${AppName}.${DNSZoneName}/
+        - !Join [ '_', !Split [ '.', !Ref AppVersion ] ]
+        - '/'
