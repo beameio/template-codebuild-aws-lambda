@@ -2,10 +2,12 @@
   "name": "codebuild-aws-lambda",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app.mjs",
   "author": "Beame.io",
   "license": "MIT",
   "dependencies": {
-    "debug": "^4.3.3"
+    "debug": "^4.3.3",
+    "express": "^4.17.2",
+    "serverless-http": "^2.7.0"
   }
 }
