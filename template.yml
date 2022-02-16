@@ -35,7 +35,7 @@ Resources:
         CertificateArn: !Ref DNSZoneCertificate
         DomainName: !Sub '${AppName}.${DNSZoneName}'
         Route53:
-          HostedZoneId: !Ref DNSZoneId
+          HostedZoneName: !Ref DNSZoneName
         SecurityPolicy: TLS_1_2
 
   LambdaFunction:
