@@ -6,9 +6,11 @@ Parameters:
   AppName:
     Type: String
     Description: "Specifies the name of the app and the dns name for the apigw(ex: https://appname.apigw_addess/appversion/)"
+    AllowedPattern: "[a-z0-9]+"
   AppVersion:
     Type: String
     Description: "Specifies the version of the app and the stage for the apigw ('.' will be replaced by '_')"
+    AllowedPattern: "[A-Za-z0-9.-_]+"
   DNSZoneId:
     Type: String
     Description: "DNS Zone Id"
