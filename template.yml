@@ -27,6 +27,7 @@ Resources:
       ValidationMethod: DNS
 
   ApiGW:
+    DependsOn: DNSZoneCertificate
     Type: AWS::Serverless::Api
     Properties:
       OpenApiVersion: 3.0.1
@@ -39,6 +40,7 @@ Resources:
         SecurityPolicy: TLS_1_2
 
   LambdaFunction:
+    DependsOn: ApiGW
     Type: AWS::Serverless::Function
     Properties:
       Handler: app.handler
